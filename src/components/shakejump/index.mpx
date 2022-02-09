@@ -1,0 +1,182 @@
+<template>
+  <view class="shakejump-wrapper">
+    <view class="text">
+      已减
+      <view class="jumper" style="{{shakeStyle}}">3
+        <view class="jumper-wrapper" style="{{jumpStyleX}}" bindanimationend="end">
+          <view class="jumper" style="{{jumpStyleY}}">3</view>
+        </view>
+      </view>
+      元
+    </view>
+  </view>
+</template>
+
+<script>
+  import { createComponent } from '@mpxjs/core'
+
+  createComponent({
+    data: {
+    },
+    computed: {
+      shakeStyle () {
+        const name = ['tobig', 'rotate0tor', 'rotatertol', 'rotateltor', 'rotatertol', 'rotatelto0', 'tonormal']
+        const duration = ['133ms', '67ms', '67ms', '67ms', '67ms', '67ms', '133ms']
+        const timingFunction = ['cubic-bezier(0.33, 0.00, 0.25, 1.00)', 'linear', 'linear', 'linear', 'linear', 'linear', 'cubic-bezier(0.33, 0.00, 0.83, 1.00)']
+        const delay = ['1000ms', '1133ms', '1200ms', '1267ms', '1333ms', '1400ms', '1467ms']
+        const fillMode = ['forwards', 'forwards', 'forwards', 'forwards', 'forwards', 'forwards']
+        return `
+                animation-name: ${name.join(',')};
+                animation-duration: ${duration.join(',')};
+                animation-timing-function: ${timingFunction.join(',')};
+                animation-delay: ${delay.join(',')};
+                animation-fill-mode: ${fillMode.join(',')}; 
+              `
+      },
+      jumpStyleX () {
+        return `
+                animation-name: jumpupX, jumpdownX, fadeout;
+                animation-duration: 375ms, 492ms, 200ms;
+                animation-timing-function: linear, linear, cubic-bezier(0.33, 0.00, 0.67, 1.00);
+                animation-delay: 1600ms, 1975ms, 2275ms;
+                animation-fill-mode: forwards, forwards, forwards;
+              `
+      },
+      jumpStyleY () {
+        return `
+                animation-name: jumpupY, jumpdownY;
+                animation-duration: 375ms, 492ms;
+                animation-timing-function: cubic-bezier(.32,.89,.69,1.24), cubic-bezier(.42,.01,.98,.61);
+                animation-delay: 1600ms, 1975ms;
+                animation-fill-mode: forwards, forwards;
+              `
+      }
+    },
+    methods: {
+      end (e) {
+        console.log(e, 222222)
+      }
+    }
+  })
+</script>
+
+<style lang="stylus">
+.text
+  display flex
+  align-items baseline
+  .jumper
+    color #FE01A2
+    margin 0 5px
+    position relative
+    .jumper-wrapper
+      position absolute
+      top 0
+      left -5px
+
+  @keyframes tobig
+  {
+    0%{
+      transform scale(1)
+    }
+    100%{
+      transform scale(1.5)
+    }
+  }
+  @keyframes tonormal
+  {
+    0%{
+      transform scale(1.5)
+    }
+    100%{
+      transform scale(1)
+    }
+  }
+  @keyframes rotate0tor
+  {
+    0%{
+      transform scale(1.5) rotateZ(0)
+    }
+    100%{
+      transform scale(1.5) rotateZ(12deg)
+    }
+  }
+  @keyframes rotateltor
+  {
+    0%{
+      transform scale(1.5) rotateZ(-12deg)
+    }
+    100%{
+      transform scale(1.5) rotateZ(12deg)
+    }
+  }
+  @keyframes rotatertol
+  {
+    0%{
+      transform scale(1.5) rotateZ(12deg)
+    }
+    100%{
+      transform scale(1.5) rotateZ(-12deg)
+    }
+  }
+  @keyframes rotatelto0
+  {
+    0%{
+      transform scale(1.5) rotateZ(-12deg)
+    }
+    100%{
+      transform scale(1.5) rotateZ(0)
+    }
+  }
+  @keyframes jumpupX
+  {
+    0%{
+      transform translateX(0)
+    }
+    100%{
+      transform translateX(97px)
+    }
+  }
+  @keyframes jumpupY
+  {
+    0%{
+      transform translateY(0)
+    }
+    100%{
+      transform translateY(-44px)
+    }
+  }
+  @keyframes jumpdownX
+  {
+    0%{
+      transform translateX(97px)
+    }
+    100%{
+      transform translateX(245px)
+    }
+  }
+  @keyframes jumpdownY
+  {
+    0%{
+      transform translateY(-44px)
+    }
+    100%{
+      transform translateY(94px)
+    }
+  }
+
+  @keyframes fadeout
+  {
+    0%{
+      opacity 1
+    }
+    100%{
+      opacity 0
+    }
+  }
+</style>
+
+<script type="application/json">
+  {
+    "usingComponents": {}
+  }
+</script>

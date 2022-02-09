@@ -1,0 +1,197 @@
+<template>
+  <view class="container">
+    <view wx:for="{{list}}" wx:key="name" class="item" bindtap="jump(item.name)" style="background:{{item.color}}">
+      <view>
+        <component is="{{item.name}}" />
+      </view>
+      <view>
+        {{item.zh}}
+      </view>
+
+      <view class="light-container">
+        <view class="light"></view>
+      </view>
+    </view>
+
+    <view class="bottom">
+      <view class="search" bindtap="search">
+        <image src="https://gift-static.hongyibo.com.cn/static/kfpub/3227/sousuo.png" mode="widthFix"></image>
+      </view>
+      <input type="text" style="{{textStyle}}" bindinput="textChange"/>
+      <view class="refresh" bindtap="refresh">
+        <image src="https://gift-static.hongyibo.com.cn/static/kfpub/3227/shuaxin.png" mode="widthFix"></image>
+      </view>
+    </view>
+  </view>
+</template>
+
+<style lang="stylus">
+.container
+  display flex
+  flex-direction column
+  padding-bottom 100px
+  .demo
+    height 100px
+    background lightblue
+    align-items center
+    display flex
+  .shadow
+    position absolute
+    opacity 0.1
+  .square
+    width 25px
+    height 25px
+    background #7F00FF
+.item
+  height 100px
+  color #ffffff
+  margin 10px 20px
+  border-radius 8px
+  display flex
+  justify-content space-between
+  align-items center
+  padding 0 20px
+  position relative
+  .light-container
+    overflow hidden
+    position absolute
+    left 0px
+    right 0px
+    top 0px
+    bottom 0px
+    .light
+      width 130px
+      height 700px
+      background-image linear-gradient(90deg, rgba(255,255,255,0.00) 0%, rgba(255,255,255,0.60) 47%, rgba(255,255,255,0.00) 100%)
+      position absolute
+      left -130px
+      top -350px
+      animation lightmove 1.5s linear forwards
+ 
+.bottom
+  position fixed
+  bottom 0
+  width 100%
+  display flex
+  justify-content center
+  align-items center
+  height 100px
+  z-index 100
+  background linear-gradient(to bottom, rgba(254,254,254,0.65) 0%, rgba(240,240,240,1) 49%, rgba(226,226,226,1) 100%)
+  box-shadow 0px 10px 36px 0px rgba(0,5,53,0.09)
+  .search
+    padding 0 20px
+    image
+      width 44px
+      height 44px
+  .refresh
+    padding 0 20px
+    image
+      width 44px
+      height 44px
+
+@keyframes lightmove
+{
+  0%{
+      transform: rotateZ(30deg) translate(0, 0)
+  }
+  100%{
+      transform: rotateZ(30deg) translate(800px,0)
+  }
+}
+</style>
+
+<script lang="ts">
+import { createPage } from '@mpxjs/core'
+const LIST = [
+  {
+    name: 'numberscroll',
+    en: 'szgd',
+    zh: '数字滚动'
+  },
+  {
+    name: 'textscroll',
+    en: 'wagd',
+    zh: '文案滚动'
+  },
+  {
+    name: 'shakejump',
+    en: 'hdty',
+    zh: '晃动跳跃'
+  },
+  {
+    name: 'loadingfinish',
+    en: 'jzwc',
+    zh: '加载完成'
+  },
+  {
+    name: 'progressbar',
+    en: 'jdt',
+    zh: '进度条'
+  },
+  {
+    name: 'circle-countdown',
+    en: 'yxdjs',
+    zh: '圆形倒计时'
+  },
+  {
+    name: 'loading',
+    en: 'loading',
+    zh: '加载中'
+  }
+]
+createPage({
+  data: {
+    refreshList: LIST,
+    textF: false
+  },
+  onLoad () {
+  },
+  computed: {
+    list () {
+      const COLORS = ['#e54d42', '#f37b1d', '#fbbd08', '#8dc63f', '#1cbbb4']
+      return this.refreshList.map((item, idx) => {
+        return {
+          ...item,
+          color: COLORS[idx] ? COLORS[idx] : COLORS[idx % COLORS.length]
+        }
+      })
+    },
+    textStyle () {
+      return this.textF ? 'width: 140px;transition:width 0.3s linear;' : 'width: 0;transition:width 0.3s linear;'
+    }
+  },
+  methods: {
+    refresh () {
+      this.refreshList = []
+      setTimeout(() => {
+        this.refreshList = LIST
+      })
+    },
+    search () {
+      this.textF = !this.textF
+    },
+    textChange ({ detail }:any) {
+      const v = detail.value
+      this.refreshList = LIST.filter(item => {
+        return item.zh.includes(v) || item.en.includes(v)
+      })
+      console.log(v, 'detail')
+    }
+  }
+})
+</script>
+
+<script type="application/json">
+  {
+    "usingComponents": {
+      "numberscroll": "../shops/numberscroll",
+      "textscroll": "../shops/textscroll",
+      "shakejump": "../shops/shakejump",
+      "progressbar": "../shops/progressbar",
+      "loadingfinish": "../shops/loadingfinish",
+      "circle-countdown": "../shops/circle-countdown",
+      "loading": "../shops/loading"
+    }
+  }
+</script>
